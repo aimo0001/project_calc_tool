@@ -2,9 +2,10 @@ package com.example.projectcalctool.repository;
 
 import com.example.projectcalctool.model.Project;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class ProjectRepository {
 
     private final JdbcTemplate jdbcTemplate;
