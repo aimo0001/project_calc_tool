@@ -39,6 +39,14 @@ public class ProjectService {
             projectRepository.save(project);
         }
 
+        public void updateProject(Project project) {
+            projectRepository.update(project);
+        }
+
+        public void deleteProject(Long projectId) {
+            projectRepository.deleteById(projectId);
+        }
+
         public List<Task> getTasksByProjectId(Long projectId) {
             return taskRepository.findByProjectId(projectId);
         }

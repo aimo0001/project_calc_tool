@@ -45,4 +45,14 @@ public class ProjectRepository {
         String sql = "INSERT INTO project (name, description, start_date) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getStartDate());
     }
+
+    public void update(Project project) {
+        String sql = "UPDATE project SET name = ?, description = ?, start_date = ? WHERE project_id = ?";
+        jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getStartDate(), project.getProjectId());
+    }
+
+    public void deleteById(Long projectId) {
+        String sql = "DELETE FROM project WHERE project_id = ?";
+        jdbcTemplate.update(sql, projectId);
+    }
 }

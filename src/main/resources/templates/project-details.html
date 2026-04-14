@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Details</title>
+</head>
+<body>
+<h1 th:text="${project.name}">Project name</h1>
+
+<p>
+    <strong>Description:</strong>
+    <span th:text="${project.description}">Project description</span>
+</p>
+
+<p>
+    <strong>Start date:</strong>
+    <span th:text="${project.startDate}">2026-04-14</span>
+</p>
+
+<p>
+    <strong>Total hours:</strong>
+    <span th:text="${totalHours}">0</span>
+</p>
+
+<p>
+    <a th:href="@{/projects/{projectId}/edit(projectId=${project.projectId})}">Edit project</a>
+</p>
+
+<form method="post" th:action="@{/projects/{projectId}/delete(projectId=${project.projectId})}">
+    <button type="submit">Delete project</button>
+</form>
+
+<h2>Tasks</h2>
+<ul>
+    <li th:each="task : ${tasks}" th:text="${task.name}">Task name</li>
+</ul>
+
+<h2>Add Task</h2>
+<form method="post" th:action="@{/projects/{projectId}/tasks/create(projectId=${project.projectId})}" th:object="${task}">
+    <div>
+        <label for="taskName">Task name</label>
+        <input id="taskName" type="text" th:field="*{name}" required>
+    </div>
+
+    <button type="submit">Save task</button>
+</form>
+
+<p><a href="/projects">Back to projects</a></p>
+</body>
+</html>
