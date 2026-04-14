@@ -11,7 +11,7 @@
 
 <ul>
     <li th:each="project : ${projects}">
-        <span th:text="${project.name}"></span>
+        <a th:href="@{/projects/{id}(id=${project.projectId})}" th:text="${project.name}">Project</a>
         <span th:text="${' - ' + project.description}"></span>
     </li>
 </ul>

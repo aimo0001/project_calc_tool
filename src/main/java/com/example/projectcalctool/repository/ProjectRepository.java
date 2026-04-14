@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 @Repository
 public class ProjectRepository {
 
@@ -24,6 +25,20 @@ public class ProjectRepository {
                         rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null
                 )
         );
+    }
+
+    public Optional<Project> findById(Long projectId) {
+        String sql = "SELECT * FROM project WHERE project_id = ?";
+        List<Project> projects = jdbcTemplate.query(sql, (rs, rowNum) ->
+                new Project(
+                        rs.getLong("project_id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null
+                ), projectId
+        );
+
+        return projects.stream().findFirst();
     }
 
     public void save(Project project) {

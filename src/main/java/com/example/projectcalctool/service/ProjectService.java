@@ -10,6 +10,7 @@ import com.example.projectcalctool.repository.TaskRepository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProjectService {
@@ -28,6 +29,10 @@ public class ProjectService {
 
         public List<Project> getAllProjects() {
             return projectRepository.findAll();
+        }
+
+        public Optional<Project> getProjectById(Long projectId) {
+            return projectRepository.findById(projectId);
         }
 
         public void createProject(Project project) {

@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ProjectController {
@@ -32,6 +33,17 @@ public class ProjectController {
     public String createProject(@ModelAttribute Project project) {
         projectService.createProject(project);
         return "redirect:/projects";
+    }
+
+    @GetMapping("/projects/{projectId}")
+    public String getProjectDetails(@PathVariable Long projectId, Model model) {
+        Project project = projectService.getProjectById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Project not found"));
+
+        model.addAttribute("project", project);
+        model.addAttribute("tasks", projectService.getTasksByProjectId(projectId));
+        model.addAttribute("totalHours", projectService.calculateTotalHoursForProject(projectId));
+        return "project-details";
     }
 
     @GetMapping("/test")
