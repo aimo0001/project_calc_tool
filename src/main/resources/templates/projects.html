@@ -12,6 +12,7 @@
 <ul>
     <li th:each="project : ${projects}">
         <span th:text="${project.name}"></span>
+        <span th:text="${' - ' + project.description}"></span>
     </li>
 </ul>
 
