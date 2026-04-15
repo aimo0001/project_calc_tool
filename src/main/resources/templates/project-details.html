@@ -32,7 +32,31 @@
 
 <h2>Tasks</h2>
 <ul>
-    <li th:each="task : ${tasks}" th:text="${task.name}">Task name</li>
+    <li th:each="task : ${tasks}">
+        <p th:text="${task.name}">Task name</p>
+
+        <p>Subtasks</p>
+        <ul>
+            <li th:each="subtask : ${subtasksByTask[task.taskId]}">
+                <span th:text="${subtask.name}">Subtask name</span>
+                <span th:text="${' - ' + subtask.hours + ' hours'}">0 hours</span>
+            </li>
+        </ul>
+
+        <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/subtasks/create(projectId=${project.projectId}, taskId=${task.taskId})}" th:object="${subtask}">
+            <div>
+                <label th:for="${'subtaskName-' + task.taskId}">Subtask name</label>
+                <input th:id="${'subtaskName-' + task.taskId}" type="text" th:field="*{name}" required>
+            </div>
+
+            <div>
+                <label th:for="${'subtaskHours-' + task.taskId}">Hours</label>
+                <input th:id="${'subtaskHours-' + task.taskId}" type="number" min="0" step="0.5" th:field="*{hours}" required>
+            </div>
+
+            <button type="submit">Save subtask</button>
+        </form>
+    </li>
 </ul>
 
 <h2>Add Task</h2>

@@ -1,6 +1,7 @@
 package com.example.projectcalctool.controller;
 
 import com.example.projectcalctool.model.Project;
+import com.example.projectcalctool.model.SubTask;
 import com.example.projectcalctool.model.Task;
 import com.example.projectcalctool.service.ProjectService;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProjectController {
@@ -56,10 +61,18 @@ public class ProjectController {
     public String getProjectDetails(@PathVariable Long projectId, Model model) {
         Project project = projectService.getProjectById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Project not found"));
+        List<Task> tasks = projectService.getTasksByProjectId(projectId);
+        Map<Long, List<SubTask>> subtasksByTask = new LinkedHashMap<>();
+
+        for (Task currentTask : tasks) {
+            subtasksByTask.put(currentTask.getTaskId(), projectService.getSubtasksByTaskId(currentTask.getTaskId()));
+        }
 
         model.addAttribute("project", project);
         model.addAttribute("task", new Task());
-        model.addAttribute("tasks", projectService.getTasksByProjectId(projectId));
+        model.addAttribute("subtask", new SubTask());
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("subtasksByTask", subtasksByTask);
         model.addAttribute("totalHours", projectService.calculateTotalHoursForProject(projectId));
         return "project-details";
     }
@@ -68,6 +81,13 @@ public class ProjectController {
     public String createTask(@PathVariable Long projectId, @ModelAttribute Task task) {
         task.setProjectId(projectId);
         projectService.createTask(task);
+        return "redirect:/projects/" + projectId;
+    }
+
+    @PostMapping("/projects/{projectId}/tasks/{taskId}/subtasks/create")
+    public String createSubtask(@PathVariable Long projectId, @PathVariable Long taskId, @ModelAttribute SubTask subtask) {
+        subtask.setTaskId(taskId);
+        projectService.createSubtask(subtask);
         return "redirect:/projects/" + projectId;
     }
 
