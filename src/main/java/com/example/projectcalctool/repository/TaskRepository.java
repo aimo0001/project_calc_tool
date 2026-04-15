@@ -28,4 +28,14 @@ public class TaskRepository {
         String sql = "INSERT INTO task (name, project_id) VALUES (?, ?)";
         jdbcTemplate.update(sql, task.getName(), task.getProjectId());
     }
+
+    public void update(Task task) {
+        String sql = "UPDATE task SET name = ? WHERE task_id = ?";
+        jdbcTemplate.update(sql, task.getName(), task.getTaskId());
+    }
+
+    public void deleteById(Long taskId) {
+        String sql = "DELETE FROM task WHERE task_id = ?";
+        jdbcTemplate.update(sql, taskId);
+    }
 }

@@ -55,12 +55,28 @@ public class ProjectService {
             taskRepository.save(task);
         }
 
+        public void updateTask(Task task) {
+            taskRepository.update(task);
+        }
+
+        public void deleteTask(Long taskId) {
+            taskRepository.deleteById(taskId);
+        }
+
         public List<SubTask> getSubtasksByTaskId(Long taskId) {
             return subtaskRepository.findByTaskId(taskId);
         }
 
         public void createSubtask(SubTask subtask) {
             subtaskRepository.save(subtask);
+        }
+
+        public void updateSubtask(SubTask subtask) {
+            subtaskRepository.update(subtask);
+        }
+
+        public void deleteSubtask(Long subtaskId) {
+            subtaskRepository.deleteById(subtaskId);
         }
 
         public double calculateTotalHoursForProject(Long projectId) {

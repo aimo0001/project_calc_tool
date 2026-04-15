@@ -33,13 +33,32 @@
 <h2>Tasks</h2>
 <ul>
     <li th:each="task : ${tasks}">
-        <p th:text="${task.name}">Task name</p>
+        <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/update(projectId=${project.projectId}, taskId=${task.taskId})}">
+            <label th:for="${'taskName-' + task.taskId}">Task name</label>
+            <input th:id="${'taskName-' + task.taskId}" type="text" name="name" th:value="${task.name}" required>
+            <button type="submit">Update task</button>
+        </form>
+
+        <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/delete(projectId=${project.projectId}, taskId=${task.taskId})}">
+            <button type="submit">Delete task</button>
+        </form>
 
         <p>Subtasks</p>
         <ul>
             <li th:each="subtask : ${subtasksByTask[task.taskId]}">
-                <span th:text="${subtask.name}">Subtask name</span>
-                <span th:text="${' - ' + subtask.hours + ' hours'}">0 hours</span>
+                <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/subtasks/{subtaskId}/update(projectId=${project.projectId}, taskId=${task.taskId}, subtaskId=${subtask.subtaskId})}">
+                    <label th:for="${'subtaskName-' + subtask.subtaskId}">Subtask name</label>
+                    <input th:id="${'subtaskName-' + subtask.subtaskId}" type="text" name="name" th:value="${subtask.name}" required>
+
+                    <label th:for="${'subtaskHours-' + subtask.subtaskId}">Hours</label>
+                    <input th:id="${'subtaskHours-' + subtask.subtaskId}" type="number" name="hours" min="0" step="0.5" th:value="${subtask.hours}" required>
+
+                    <button type="submit">Update subtask</button>
+                </form>
+
+                <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/subtasks/{subtaskId}/delete(projectId=${project.projectId}, taskId=${task.taskId}, subtaskId=${subtask.subtaskId})}">
+                    <button type="submit">Delete subtask</button>
+                </form>
             </li>
         </ul>
 

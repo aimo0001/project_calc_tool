@@ -29,4 +29,14 @@ public class SubTaskRepository {
         String sql = "INSERT INTO subtask (name, hours, task_id) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, subtask.getName(), subtask.getHours(), subtask.getTaskId());
     }
+
+    public void update(SubTask subtask) {
+        String sql = "UPDATE subtask SET name = ?, hours = ? WHERE subtask_id = ?";
+        jdbcTemplate.update(sql, subtask.getName(), subtask.getHours(), subtask.getSubtaskId());
+    }
+
+    public void deleteById(Long subtaskId) {
+        String sql = "DELETE FROM subtask WHERE subtask_id = ?";
+        jdbcTemplate.update(sql, subtaskId);
+    }
 }

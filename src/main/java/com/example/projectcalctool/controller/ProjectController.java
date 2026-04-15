@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -84,10 +85,49 @@ public class ProjectController {
         return "redirect:/projects/" + projectId;
     }
 
+    @PostMapping("/projects/{projectId}/tasks/{taskId}/update")
+    public String updateTask(@PathVariable Long projectId, @PathVariable Long taskId, @RequestParam String name) {
+        Task task = new Task();
+        task.setTaskId(taskId);
+        task.setProjectId(projectId);
+        task.setName(name);
+        projectService.updateTask(task);
+        return "redirect:/projects/" + projectId;
+    }
+
+    @PostMapping("/projects/{projectId}/tasks/{taskId}/delete")
+    public String deleteTask(@PathVariable Long projectId, @PathVariable Long taskId) {
+        projectService.deleteTask(taskId);
+        return "redirect:/projects/" + projectId;
+    }
+
     @PostMapping("/projects/{projectId}/tasks/{taskId}/subtasks/create")
     public String createSubtask(@PathVariable Long projectId, @PathVariable Long taskId, @ModelAttribute SubTask subtask) {
         subtask.setTaskId(taskId);
         projectService.createSubtask(subtask);
+        return "redirect:/projects/" + projectId;
+    }
+
+    @PostMapping("/projects/{projectId}/tasks/{taskId}/subtasks/{subtaskId}/update")
+    public String updateSubtask(@PathVariable Long projectId,
+                                @PathVariable Long taskId,
+                                @PathVariable Long subtaskId,
+                                @RequestParam String name,
+                                @RequestParam double hours) {
+        SubTask subtask = new SubTask();
+        subtask.setSubtaskId(subtaskId);
+        subtask.setTaskId(taskId);
+        subtask.setName(name);
+        subtask.setHours(hours);
+        projectService.updateSubtask(subtask);
+        return "redirect:/projects/" + projectId;
+    }
+
+    @PostMapping("/projects/{projectId}/tasks/{taskId}/subtasks/{subtaskId}/delete")
+    public String deleteSubtask(@PathVariable Long projectId,
+                                @PathVariable Long taskId,
+                                @PathVariable Long subtaskId) {
+        projectService.deleteSubtask(subtaskId);
         return "redirect:/projects/" + projectId;
     }
 
