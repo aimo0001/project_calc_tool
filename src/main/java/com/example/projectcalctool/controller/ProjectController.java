@@ -73,6 +73,7 @@ public class ProjectController {
         model.addAttribute("task", new Task());
         model.addAttribute("subtask", new SubTask());
         model.addAttribute("tasks", tasks);
+        model.addAttribute("taskHours", projectService.calculateTaskHours(tasks));
         model.addAttribute("subtasksByTask", subtasksByTask);
         model.addAttribute("totalHours", projectService.calculateTotalHoursForProject(projectId));
         return "project-details";

@@ -3,91 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <title>Project Details</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-<h1 th:text="${project.name}">Project name</h1>
+<div class="page">
+    <div class="card">
+        <div class="top-bar">
+            <h1>Projekt: <span th:text="${project.name}">Projekt A</span></h1>
+            <a class="button secondary" href="/projects">Tilbage</a>
+        </div>
 
-<p>
-    <strong>Description:</strong>
-    <span th:text="${project.description}">Project description</span>
-</p>
+        <div class="summary-box">
+            Samlet tid: <span th:text="${totalHours}">0</span> timer
+        </div>
 
-<p>
-    <strong>Start date:</strong>
-    <span th:text="${project.startDate}">2026-04-14</span>
-</p>
+        <p class="muted" th:if="${project.description != null and !#strings.isEmpty(project.description)}">
+            Beskrivelse: <span th:text="${project.description}">Beskrivelse</span>
+        </p>
 
-<p>
-    <strong>Total hours:</strong>
-    <span th:text="${totalHours}">0</span>
-</p>
+        <p class="muted" th:if="${project.startDate != null}">
+            Startdato: <span th:text="${project.startDate}">2026-04-14</span>
+        </p>
 
-<p>
-    <a th:href="@{/projects/{projectId}/edit(projectId=${project.projectId})}">Edit project</a>
-</p>
-
-<form method="post" th:action="@{/projects/{projectId}/delete(projectId=${project.projectId})}">
-    <button type="submit">Delete project</button>
-</form>
-
-<h2>Tasks</h2>
-<ul>
-    <li th:each="task : ${tasks}">
-        <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/update(projectId=${project.projectId}, taskId=${task.taskId})}">
-            <label th:for="${'taskName-' + task.taskId}">Task name</label>
-            <input th:id="${'taskName-' + task.taskId}" type="text" name="name" th:value="${task.name}" required>
-            <button type="submit">Update task</button>
-        </form>
-
-        <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/delete(projectId=${project.projectId}, taskId=${task.taskId})}">
-            <button type="submit">Delete task</button>
-        </form>
-
-        <p>Subtasks</p>
-        <ul>
-            <li th:each="subtask : ${subtasksByTask[task.taskId]}">
-                <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/subtasks/{subtaskId}/update(projectId=${project.projectId}, taskId=${task.taskId}, subtaskId=${subtask.subtaskId})}">
-                    <label th:for="${'subtaskName-' + subtask.subtaskId}">Subtask name</label>
-                    <input th:id="${'subtaskName-' + subtask.subtaskId}" type="text" name="name" th:value="${subtask.name}" required>
-
-                    <label th:for="${'subtaskHours-' + subtask.subtaskId}">Hours</label>
-                    <input th:id="${'subtaskHours-' + subtask.subtaskId}" type="number" name="hours" min="0" step="0.5" th:value="${subtask.hours}" required>
-
-                    <button type="submit">Update subtask</button>
-                </form>
-
-                <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/subtasks/{subtaskId}/delete(projectId=${project.projectId}, taskId=${task.taskId}, subtaskId=${subtask.subtaskId})}">
-                    <button type="submit">Delete subtask</button>
-                </form>
-            </li>
-        </ul>
-
-        <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/subtasks/create(projectId=${project.projectId}, taskId=${task.taskId})}" th:object="${subtask}">
-            <div>
-                <label th:for="${'subtaskName-' + task.taskId}">Subtask name</label>
-                <input th:id="${'subtaskName-' + task.taskId}" type="text" th:field="*{name}" required>
-            </div>
-
-            <div>
-                <label th:for="${'subtaskHours-' + task.taskId}">Hours</label>
-                <input th:id="${'subtaskHours-' + task.taskId}" type="number" min="0" step="0.5" th:field="*{hours}" required>
-            </div>
-
-            <button type="submit">Save subtask</button>
-        </form>
-    </li>
-</ul>
-
-<h2>Add Task</h2>
-<form method="post" th:action="@{/projects/{projectId}/tasks/create(projectId=${project.projectId})}" th:object="${task}">
-    <div>
-        <label for="taskName">Task name</label>
-        <input id="taskName" type="text" th:field="*{name}" required>
+        <div class="button-row">
+            <a class="button secondary" th:href="@{/projects/{projectId}/edit(projectId=${project.projectId})}">Rediger projekt</a>
+            <form method="post" th:action="@{/projects/{projectId}/delete(projectId=${project.projectId})}">
+                <button type="submit" class="danger-button">Slet projekt</button>
+            </form>
+        </div>
     </div>
 
-    <button type="submit">Save task</button>
-</form>
+    <div class="card">
+        <h2>Tilføj opgave</h2>
+        <form method="post" th:action="@{/projects/{projectId}/tasks/create(projectId=${project.projectId})}" th:object="${task}" class="form-grid">
+            <div class="form-group">
+                <label for="taskName">Navn</label>
+                <input id="taskName" type="text" th:field="*{name}" required>
+            </div>
 
-<p><a href="/projects">Back to projects</a></p>
+            <div class="button-row">
+                <button type="submit">Tilføj opgave</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Opgaver</h2>
+
+        <div th:if="${#lists.isEmpty(tasks)}" class="empty-state">
+            Der er ingen opgaver endnu.
+        </div>
+
+        <div th:each="task : ${tasks}">
+            <div class="task-row">
+                <strong th:text="${task.name}">Opgave 1</strong>
+                <span th:text="${taskHours[task.taskId] + ' timer'}">5 timer</span>
+                <div class="inline-actions">
+                    <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/update(projectId=${project.projectId}, taskId=${task.taskId})}">
+                        <input type="hidden" name="name" th:value="${task.name}">
+                        <button type="submit" class="secondary-button">Gem navn</button>
+                    </form>
+                    <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/delete(projectId=${project.projectId}, taskId=${task.taskId})}">
+                        <button type="submit" class="danger-button">Slet</button>
+                    </form>
+                </div>
+            </div>
+
+            <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/update(projectId=${project.projectId}, taskId=${task.taskId})}" class="form-grid" style="margin-bottom: 10px;">
+                <div class="form-group">
+                    <label th:for="${'taskName-' + task.taskId}">Rediger opgavenavn</label>
+                    <input th:id="${'taskName-' + task.taskId}" type="text" name="name" th:value="${task.name}" required>
+                </div>
+                <div class="button-row">
+                    <button type="submit" class="secondary-button">Opdater</button>
+                </div>
+            </form>
+
+            <div class="subtask-list">
+                <div th:each="subtask : ${subtasksByTask[task.taskId]}" class="subtask-row">
+                    <span th:text="${subtask.name}">Delopgave</span>
+                    <span th:text="${subtask.hours + ' timer'}">2 timer</span>
+                    <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/subtasks/{subtaskId}/delete(projectId=${project.projectId}, taskId=${task.taskId}, subtaskId=${subtask.subtaskId})}">
+                        <button type="submit" class="danger-button">Slet</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 12px 0 16px 18px; padding: 14px;">
+                <h2 style="font-size: 18px;">Tilføj delopgave</h2>
+                <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/subtasks/create(projectId=${project.projectId}, taskId=${task.taskId})}" th:object="${subtask}" class="form-grid">
+                    <div class="form-group">
+                        <label th:for="${'subtaskName-' + task.taskId}">Navn</label>
+                        <input th:id="${'subtaskName-' + task.taskId}" type="text" th:field="*{name}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="${'subtaskHours-' + task.taskId}">Timer</label>
+                        <input th:id="${'subtaskHours-' + task.taskId}" type="number" min="0" step="0.5" th:field="*{hours}" required>
+                    </div>
+
+                    <div class="button-row">
+                        <button type="submit">Gem delopgave</button>
+                    </div>
+                </form>
+            </div>
+
+            <div th:each="subtask : ${subtasksByTask[task.taskId]}" class="card" style="margin: 0 0 12px 18px; padding: 14px;">
+                <form method="post" th:action="@{/projects/{projectId}/tasks/{taskId}/subtasks/{subtaskId}/update(projectId=${project.projectId}, taskId=${task.taskId}, subtaskId=${subtask.subtaskId})}" class="form-grid">
+                    <div class="form-group">
+                        <label th:for="${'editSubtaskName-' + subtask.subtaskId}">Rediger delopgave</label>
+                        <input th:id="${'editSubtaskName-' + subtask.subtaskId}" type="text" name="name" th:value="${subtask.name}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="${'editSubtaskHours-' + subtask.subtaskId}">Timer</label>
+                        <input th:id="${'editSubtaskHours-' + subtask.subtaskId}" type="number" name="hours" min="0" step="0.5" th:value="${subtask.hours}" required>
+                    </div>
+
+                    <div class="button-row">
+                        <button type="submit" class="secondary-button">Opdater delopgave</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

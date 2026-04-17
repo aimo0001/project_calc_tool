@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Project</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-<h1>Create Project</h1>
+<div class="page">
+    <div class="card">
+        <h1>Opret projekt</h1>
 
-<form action="/projects/create" method="post" th:object="${project}">
-    <div>
-        <label for="name">Project name</label>
-        <input id="name" type="text" th:field="*{name}" required>
+        <form action="/projects/create" method="post" th:object="${project}" class="form-grid">
+            <div class="form-group">
+                <label for="name">Navn</label>
+                <input id="name" type="text" th:field="*{name}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Beskrivelse</label>
+                <input id="description" type="text" th:field="*{description}">
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Startdato</label>
+                <input id="startDate" type="date" th:field="*{startDate}">
+            </div>
+
+            <div class="button-row">
+                <button type="submit">Gem</button>
+                <a class="button secondary" href="/projects">Tilbage</a>
+            </div>
+        </form>
     </div>
-
-    <div>
-        <label for="description">Description</label>
-        <input id="description" type="text" th:field="*{description}">
-    </div>
-
-    <div>
-        <label for="startDate">Start date</label>
-        <input id="startDate" type="date" th:field="*{startDate}">
-    </div>
-
-    <button type="submit">Save project</button>
-</form>
-
-<p><a href="/projects">Back to projects</a></p>
+</div>
 </body>
 </html>

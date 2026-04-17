@@ -10,7 +10,9 @@ import com.example.projectcalctool.repository.TaskRepository;
 
 
 import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Optional;
+import java.util.Map;
 
 @Service
 public class ProjectService {
@@ -91,6 +93,27 @@ public class ProjectService {
             }
 
             return totalHours;
+        }
+
+        public double calculateHoursForTask(Long taskId) {
+            List<SubTask> subtasks = subtaskRepository.findByTaskId(taskId);
+            double totalHours = 0.0;
+
+            for (SubTask subtask : subtasks) {
+                totalHours += subtask.getHours();
+            }
+
+            return totalHours;
+        }
+
+        public Map<Long, Double> calculateTaskHours(List<Task> tasks) {
+            Map<Long, Double> taskHours = new LinkedHashMap<>();
+
+            for (Task task : tasks) {
+                taskHours.put(task.getTaskId(), calculateHoursForTask(task.getTaskId()));
+            }
+
+            return taskHours;
         }
     }
 
