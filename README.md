@@ -71,7 +71,7 @@ src/main/resources/data.sql
 mvn spring-boot:run
 ```
 
-6. Aaben browseren og gå til:
+6. Åben browseren og gå til:
 
 ```text
 http://localhost:8080/projects
@@ -112,7 +112,7 @@ SPRING_PROFILES_ACTIVE=prod
 
 Systemet følger en lagdelt MVC-struktur:
 
-- **Controller** modtager HTTP-forespoergsler og returnerer Thymeleaf-sider
+- **Controller** modtager HTTP-forespørgsler og returnerer Thymeleaf-sider
 - **Service** indeholder forretningslogik, blandt andet beregning af samlet tid
 - **Repository** håndterer SQL-forespørgsler via JdbcTemplate
 - **Database** gemmer projekter, opgaver og delopgaver
