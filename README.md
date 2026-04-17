@@ -71,7 +71,7 @@ src/main/resources/data.sql
 mvn spring-boot:run
 ```
 
-6. Aaben browseren og gå til:
+6. Åben browseren og gå til:
 
 ```text
 http://localhost:8080/projects
