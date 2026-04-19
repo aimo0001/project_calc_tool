@@ -7,7 +7,7 @@ Systemet bruges til at oprette projekter, opgaver og delopgaver. Timer registrer
 ## Link til applikation
 
 ```text
-[indsæt Azure link]
+https://projectcalc-aisha-app-hkg3b9c8h4cteuab.francecentral-01.azurewebsites.net/projects
 ```
 
 ## Tekniske forudsaetninger
@@ -35,7 +35,7 @@ Systemet bruges til at oprette projekter, opgaver og delopgaver. Timer registrer
 1. Klon repository:
 
 ```bash
-git clone https://github.com/[dit-brugernavn]/project_calc_tool.git
+git clone https://github.com/aimo0001/project_calc_tool.git
 ```
 
 2. Opret databasen i MySQL Workbench:
@@ -167,12 +167,12 @@ Workflowet bygger projektet med Maven og deployer JAR-filen til Azure Web App.
 
 ## Azure environment variables
 
-Naar Azure MySQL er oprettet, skal disse variabler sættes i Azure Web App:
+Når Azure MySQL er oprettet, skal disse variabler sættes i Azure Web App:
 
 ```text
 SPRING_PROFILES_ACTIVE=prod
-DB_URL=jdbc:mysql://[server-navn].mysql.database.azure.com:3306/project_calc?useSSL=true&requireSSL=true&serverTimezone=UTC
-DB_USERNAME=[database-bruger]
+DB_URL=jdbc:mysql://projectcalc-aisha-po.mysql.database.azure.com:3306/project_calc?sslMode=REQUIRED&serverTimezone=UTC
+DB_USERNAME=aishaadmin
 DB_PASSWORD=[database-password]
 SPRING_SQL_INIT_MODE=always
 ```
