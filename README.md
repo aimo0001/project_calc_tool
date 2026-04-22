@@ -167,7 +167,7 @@ Workflowet bygger projektet med Maven og deployer JAR-filen til Azure Web App.
 
 ## Azure environment variables
 
-Når Azure Database for MySQL Flexible Server er oprettet, skal disse variabler sættes i Azure Web App:
+I Azure Web App anvendes følgende environment variables til produktionsmiljøet::
 
 ```text
 SPRING_PROFILES_ACTIVE=prod
