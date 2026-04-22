@@ -1,8 +1,8 @@
 # Alpha Solutions - Projektkalkulationsværktoej
 
-Et simpelt webbaseret projektkalkulationsvaerktoej udviklet for Alpha Solutions.
+Et simpelt webbaseret projektkalkulationsværktoej udviklet for Alpha Solutions.
 
-Systemet bruges til at oprette projekter, opgaver og delopgaver. Timer registreres paa delopgaver, og systemet beregner den samlede tid for et projekt.
+Systemet bruges til at oprette projekter, opgaver og delopgaver. Timer registreres på delopgaver, og systemet beregner den samlede tid for et projekt.
 
 ## Link til applikation
 
@@ -10,12 +10,12 @@ Systemet bruges til at oprette projekter, opgaver og delopgaver. Timer registrer
 https://projectcalc-aisha-app-hkg3b9c8h4cteuab.francecentral-01.azurewebsites.net/projects
 ```
 
-## Tekniske forudsaetninger
+## Tekniske forudsætninger
 
 - Java 21
 - Maven 3.9.14
 - MySQL 8.0
-- IntelliJ IDEA
+- IntelliJ IDEA 2026.1
 - Git
 
 ## Teknologier
@@ -28,7 +28,7 @@ https://projectcalc-aisha-app-hkg3b9c8h4cteuab.francecentral-01.azurewebsites.ne
 - H2 til integrationstest
 - Maven
 - GitHub Actions
-- Azure App Service
+- Azure Database for MySQL Flexible Server
 
 ## Sådan starter du applikationen lokalt
 
@@ -105,7 +105,7 @@ SPRING_PROFILES_ACTIVE=prod
 - Rediger og slet opgaver
 - Tilføj delopgaver til en opgave
 - Rediger og slet delopgaver
-- Registrer timer paa delopgaver
+- Registrer timer på delopgaver
 - Beregn samlet projekttid
 
 ## Arkitektur
@@ -167,7 +167,7 @@ Workflowet bygger projektet med Maven og deployer JAR-filen til Azure Web App.
 
 ## Azure environment variables
 
-Når Azure MySQL er oprettet, skal disse variabler sættes i Azure Web App:
+Når Azure Database for MySQL Flexible Server er oprettet, skal disse variabler sættes i Azure Web App:
 
 ```text
 SPRING_PROFILES_ACTIVE=prod
